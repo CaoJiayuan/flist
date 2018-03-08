@@ -18,6 +18,11 @@ class PageListState extends State<PageList> {
   PageListState({this.builder});
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     return builder.onBuildList(context);

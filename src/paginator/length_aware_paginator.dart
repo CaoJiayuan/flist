@@ -19,8 +19,7 @@ class LengthAwarePaginator extends Paginator {
   List<Map<String, Object>> data = [];
 
   @override
-  // ignore: missing_return
-  Future<List> onLoad(Response<HttpClientResponse> response) async {
+  Future<List<Map<String, Object>>> onLoad(Response<HttpClientResponse> response) async {
     var responseBody ;
     if(Request.parseResponse) {
       responseBody = response.responseBody;
