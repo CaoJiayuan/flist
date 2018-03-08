@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'list_builder.dart';
+import 'package:flutterdemo/components/pagelist/src/list_builder.dart';
 
 class PageList extends StatefulWidget {
   final ListBuilder builder;
