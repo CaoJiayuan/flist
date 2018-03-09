@@ -1,6 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutterdemo/components/pagelist/src/list_builder.dart';
+import 'list_builder.dart';
+
+export 'list_builder.dart';
+export 'package:flist/paginator/paginator.dart';
+export 'package:flist/paginator/length_aware_paginator.dart';
 
 class PageList extends StatefulWidget {
   final ListBuilder builder;
@@ -12,19 +16,15 @@ class PageList extends StatefulWidget {
 }
 
 class PageListState extends State<PageList> {
-  final ListBuilder builder;
-  List<Map<String, Object>> items = [];
-
-  PageListState({this.builder});
 
   @override
   void initState() {
     super.initState();
+    widget.builder.onLoadData().then((items) => setState(() => {}));
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return builder.onBuildList(context);
+    return widget.builder.onBuildList(context);
   }
 }
