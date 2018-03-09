@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'list_builder.dart';
 
@@ -20,11 +22,28 @@ class PageListState extends State<PageList> {
   @override
   void initState() {
     super.initState();
-    widget.builder.loadData().then((items) => setState(() => {}));
+    loadData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder.onBuildList(context);
+    var indicator = new RefreshIndicator(child: widget.builder.onBuildList(context), onRefresh: loadData);
+
+    return new NotificationListener(
+      child: indicator,
+      onNotification: onListNotification,
+    );
+  }
+
+
+  Future<Null> loadData(){
+    return widget.builder.loadData().then((items) {
+      setState(() => {});
+      return null;
+    });
+  }
+
+  bool onListNotification(n) {
+    return true;
   }
 }

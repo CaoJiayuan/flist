@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:darequest/request.dart';
@@ -7,10 +8,19 @@ abstract class Paginator {
 
   int currentPage = 0;
 
+  String pageParam = 'page';
+
 
   Future<List> load([Map<String, dynamic> params]) {
-    return Request.get(getUrl(), {"params": params}).then((response) {
-      return onLoad(response);
+    return Request.get(getUrl(), {"params": params}).then((response) async {
+      var responseBody;
+      if (Request.parseResponse) {
+        responseBody = response.responseBody;
+      } else {
+        var body = await response.response.transform(UTF8.decoder).join();
+        responseBody = Request.decodeJson(body);
+      }
+      return onLoad(responseBody);
     });
   }
 
@@ -18,7 +28,7 @@ abstract class Paginator {
     if (params == null) {
       params = {};
     }
-    params['page'] = page;
+    params[pageParam] = page;
     return load(params);
   }
 
@@ -26,7 +36,7 @@ abstract class Paginator {
     if (params == null) {
       params = {};
     }
-    params['page'] = currentPage + 1;
+    params[pageParam] = currentPage + 1;
     return load(params);
   }
 
@@ -34,12 +44,12 @@ abstract class Paginator {
     if (params == null) {
       params = {};
     }
-    params['page'] = currentPage - 1;
+    params[pageParam] = currentPage - 1;
     return load(params);
   }
 
 
-  Future<List> onLoad(Response<HttpClientResponse> response);
+  Future<List> onLoad(dynamic response);
 
   String getUrl();
 }

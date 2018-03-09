@@ -23,14 +23,7 @@ class LengthAwarePaginator extends Paginator {
   bool get hasNextPage => this.nextPageUrl != null;
 
   @override
-  Future<List<Map<String, Object>>> onLoad(Response<HttpClientResponse> response) async {
-    var responseBody;
-    if (Request.parseResponse) {
-      responseBody = response.responseBody;
-    } else {
-      var body = await response.response.transform(UTF8.decoder).join();
-      responseBody = Request.decodeJson(body);
-    }
+  Future<List<Map<String, Object>>> onLoad(dynamic responseBody) {
     total = responseBody['total'];
     perPage = responseBody['per_page'];
     currentPage = responseBody['current_page'];
@@ -40,7 +33,8 @@ class LengthAwarePaginator extends Paginator {
     from = responseBody['from'];
     to = responseBody['to'];
     data = responseBody['data'];
-    return data;
+
+    return new Future.value(data);
   }
 
   @override
