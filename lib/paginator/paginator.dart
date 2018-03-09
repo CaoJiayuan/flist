@@ -10,7 +10,7 @@ abstract class Paginator {
 
   Future<List> load([Map<String, dynamic> params]) {
     return Request.get(getUrl(), {"params": params}).then((response) {
-     return onLoad(response);
+      return onLoad(response);
     });
   }
 

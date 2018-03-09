@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'list_builder.dart';
 
 export 'list_builder.dart';
-export 'package:flist/paginator/paginator.dart';
-export 'package:flist/paginator/length_aware_paginator.dart';
+export 'paginator/paginator.dart';
+export 'paginator/length_aware_paginator.dart';
 
 class PageList extends StatefulWidget {
   final ListBuilder builder;
@@ -20,7 +20,7 @@ class PageListState extends State<PageList> {
   @override
   void initState() {
     super.initState();
-    widget.builder.onLoadData().then((items) => setState(() => {}));
+    widget.builder.loadData().then((items) => setState(() => {}));
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flist/paginator/paginator.dart';
+import 'paginator/paginator.dart';
 
 abstract class ListBuilder {
 
@@ -18,8 +18,12 @@ abstract class ListBuilder {
         itemBuilder: (BuildContext context, int index) => onCreateItem(context, items[index]), itemCount: items.length);
   }
 
-  Future<List> onLoadData(){
-    return pager.load(params).then((data) => this.items = data).catchError((error) => onLoadError(error));
+  Future<List> loadData(){
+    return pager.load(params).then((data) => this.items = onLoadData(data)).catchError((error) => onLoadError(error));
+  }
+
+  List onLoadData(List data){
+    return data;
   }
 
   dynamic onLoadError(error);
