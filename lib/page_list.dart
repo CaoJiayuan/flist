@@ -1,8 +1,9 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'list_builder.dart';
+import 'pull_up_load_notification.dart';
+
 
 export 'list_builder.dart';
 export 'paginator/paginator.dart';
@@ -27,7 +28,8 @@ class PageListState extends State<PageList> {
 
   @override
   Widget build(BuildContext context) {
-    var indicator = new RefreshIndicator(child: widget.builder.onBuildList(context), onRefresh: loadData);
+    var indicator = new RefreshIndicator(
+        child: widget.builder.onBuildList(context), onRefresh: loadData);
 
     return new NotificationListener(
       child: indicator,
@@ -36,14 +38,30 @@ class PageListState extends State<PageList> {
   }
 
 
-  Future<Null> loadData(){
+  Future<Null> loadData() {
     return widget.builder.loadData().then((items) {
       setState(() => {});
       return null;
     });
   }
 
+  Future<Null> loadMore() {
+    var builder = widget.builder;
+    return builder.loadMore().then((items) {
+      if (!builder.pager.hasNextPage){
+        builder.addNoMore();
+      }
+      setState(() => {});
+      return null;
+    });
+  }
+
+
   bool onListNotification(n) {
+    if (n is PullUpLoadNotification) {
+      loadMore();
+    }
+
     return true;
   }
 }

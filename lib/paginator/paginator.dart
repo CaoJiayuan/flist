@@ -10,6 +10,7 @@ abstract class Paginator {
 
   String pageParam = 'page';
 
+  bool get hasNextPage;
 
   Future<List> load([Map<String, dynamic> params]) {
     return Request.get(getUrl(), {"params": params}).then((response) async {

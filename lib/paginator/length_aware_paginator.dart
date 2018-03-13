@@ -20,12 +20,14 @@ class LengthAwarePaginator extends Paginator {
 
   LengthAwarePaginator({this.url});
 
+  @override
   bool get hasNextPage => this.nextPageUrl != null;
 
   @override
   Future<List<Map<String, Object>>> onLoad(dynamic responseBody) {
+    
     total = responseBody['total'];
-    perPage = responseBody['per_page'];
+    perPage = useAsInt(responseBody['per_page']);
     currentPage = responseBody['current_page'];
     lastPage = responseBody['last_page'];
     nextPageUrl = responseBody['next_page_url'];
@@ -56,4 +58,13 @@ class LengthAwarePaginator extends Paginator {
     return map;
   }
 
+  useAsInt(val) {
+    if (val is String) {
+      return int.parse(val);
+    }
+    if (val is int) {
+      return val;
+    }
+    return val;
+  }
 }
